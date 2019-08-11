@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from sbus import sbus, utils
-from tinyodrive import tinyodrive
+from sbus import rx, utils
+from tinyodrive import odrive
 import asyncio
 
 ARM_CHAN = 5
@@ -9,14 +9,22 @@ REV_CHAN = 4
 
 
 async def main():
-    sb = await sbus.SBUSReceiver.create("/dev/ttyUSB1")
-    od = await tinyodrive.TinyOdrive.create("/dev/ttyUSB0")
+    sb = await rx.SBUSReceiver.create("/dev/ttyUSB1")
+    od = await odrive.TinyOdrive.create("/dev/ttyUSB0")
 
     armed = False
     reverse = False
 
     while True:
-        frame: sbus.SBUSReceiver.SBUSFrame = await sb.get_frame()
+        await od.update_watchdog(0)
+        await od.update_watchdog(1)
+
+        try:
+            frame: rx.SBUSReceiver.SBUSFrame = await asyncio.wait_for(sb.get_frame(), 10)
+        except asyncio.futures.TimeoutError:
+            print("no frame, check rx")
+            continue
+
         # print(frame)
         arm = frame.get_rx_channel(ARM_CHAN)
 
