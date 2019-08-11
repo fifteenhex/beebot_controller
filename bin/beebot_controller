@@ -3,12 +3,13 @@
 from sbus import rx, utils
 from tinyodrive import odrive
 import asyncio
+import argparse
 
 ARM_CHAN = 5
 REV_CHAN = 4
 
 
-async def main():
+async def main(odrive_port, sbus_port):
     sb = await rx.SBUSReceiver.create("/dev/ttyUSB1")
     od = await odrive.TinyOdrive.create("/dev/ttyUSB0")
 
@@ -65,5 +66,13 @@ async def main():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='BeeBot Controller.')
+    parser.add_argument('--odrive_port', type=str, nargs=1, required=True,
+                        help='tty that is connected to the odrive')
+    parser.add_argument('--sbus_port', type=str, nargs=1, required=True,
+                        help='tty that is connected to the sbus receiver')
+
+    args = parser.parse_args()
+
     loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
+    loop.run_until_complete(main(args.odrive_port, args.sbus_port))
