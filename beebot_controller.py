@@ -20,13 +20,13 @@ async def main():
         await od.update_watchdog(1)
 
         try:
-            frame: rx.SBUSReceiver.SBUSFrame = await asyncio.wait_for(sb.get_frame(), 10)
+            frame: rx.SBUSReceiver.SBUSFrame = await asyncio.wait_for(sb.get_frame(), 1)
         except asyncio.futures.TimeoutError:
-            print("no frame, check rx")
             continue
 
         # print(frame)
-        arm = frame.get_rx_channel(ARM_CHAN)
+        failsafe = frame.get_failsafe_status()
+        arm = failsafe == 0 and frame.get_rx_channel(ARM_CHAN)
 
         if utils.channel_to_bool(arm):
             if not armed:
