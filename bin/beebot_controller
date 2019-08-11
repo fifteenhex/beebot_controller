@@ -10,8 +10,8 @@ REV_CHAN = 4
 
 
 async def main(odrive_port, sbus_port):
-    sb = await rx.SBUSReceiver.create("/dev/ttyUSB1")
-    od = await odrive.TinyOdrive.create("/dev/ttyUSB0")
+    od = await odrive.TinyOdrive.create(odrive_port)
+    sb = await rx.SBUSReceiver.create(sbus_port)
 
     armed = False
     reverse = False
