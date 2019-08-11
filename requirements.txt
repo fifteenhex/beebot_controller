@@ -1,2 +1,2 @@
-git+git://https://github.com/fifteenhex/python-tinyodrive.git#egg=tinyodrive
-git+git://https://github.com/fifteenhex/python-sbus.git#egg=sbus
+git+git://github.com/fifteenhex/python-tinyodrive.git#egg=tinyodrive
+git+git://github.com/fifteenhex/python-sbus.git#egg=sbus
