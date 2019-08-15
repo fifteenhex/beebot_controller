@@ -67,9 +67,9 @@ async def main(odrive_port, sbus_port):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='BeeBot Controller.')
-    parser.add_argument('--odrive_port', type=str, nargs=1, required=True,
+    parser.add_argument('--odrive_port', type=str, required=True,
                         help='tty that is connected to the odrive')
-    parser.add_argument('--sbus_port', type=str, nargs=1, required=True,
+    parser.add_argument('--sbus_port', type=str, required=True,
                         help='tty that is connected to the sbus receiver')
 
     args = parser.parse_args()
